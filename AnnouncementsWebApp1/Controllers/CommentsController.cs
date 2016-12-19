@@ -22,23 +22,6 @@ namespace AnnouncementsWebApp1.Controllers
             return View(comments.ToList());
         }
 
-        //Get Comments.
-        private IEnumerable<Comment> GetComments()
-        {
-            var comments = db.Comments.Include(c => c.Announcement);
-            return comments.ToList();
-        }
-
-
-        /// <summary>
-        /// Builds Comments Table 
-        /// </summary>
-        /// <returns> Announcements Table Partial View</returns>
-        public ActionResult BuildCommentsTable()
-        {
-            return PartialView("_CommentsTable", GetComments());
-        }
-
         // GET: Comments/Details/5
         public ActionResult Details(int? id)
         {
@@ -85,6 +68,11 @@ namespace AnnouncementsWebApp1.Controllers
             return View(comment);
         }
 
+        /// <summary>
+        /// Get comments for an Announcement
+        /// </summary>
+        /// <param name="id">The comments' Announcement Id</param>
+        /// <returns>AnnouncementViewModel</returns>
         public AnnouncementView GetComments(int? id)
         {
             Announcement announcement = db.Announcements.Find(id);
@@ -102,6 +90,11 @@ namespace AnnouncementsWebApp1.Controllers
             return av;
         }
 
+        /// <summary>
+        /// Ajax Comment creation method.
+        /// </summary>
+        /// <param name="comment"> Prefix used to be compatible with AnnouncementsViewModel</param>
+        /// <returns>_CommentsTable partial view with comments for a perticular announcment</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AJAXCommentCreate([Bind(Prefix="Comment",Include = "Id,Text,AnnouncementId")] Comment comment)
@@ -116,7 +109,6 @@ namespace AnnouncementsWebApp1.Controllers
                 comment.Date = DateTime.Now;
                 db.Comments.Add(comment);
                 db.SaveChanges();
-                System.Diagnostics.Debug.WriteLine("GotHERE");
             }
 
             //ViewBag.AnnouncementId = new SelectList(db.Announcements, "Id", "Title", comment.AnnouncementId);
