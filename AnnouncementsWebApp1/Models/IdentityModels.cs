@@ -25,6 +25,9 @@ namespace AnnouncementsWebApp1.Models
         {
         }
 
+        public DbSet<Announcement> Announcements { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

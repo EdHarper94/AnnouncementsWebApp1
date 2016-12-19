@@ -1,0 +1,107 @@
+﻿@model AnnouncementsWebApp1.Models.AnnouncementView
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Announcement</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Announcement.CreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Announcement.CreatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Announcement.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Announcement.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Announcement.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Announcement.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Announcement.Text)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Announcement.Text)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Announcement.IsDeleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Announcement.IsDeleted)
+        </dd>
+        <dd>
+            @Html.HiddenFor(model => model.Comment.AnnouncementId)
+        </dd>
+        
+    </dl>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Announcement.Id }) |
+        @Html.ActionLink("Back to List", "Index") |
+        @Html.ActionLink("Comment", "Create", "Comments") 
+    </p>
+</div>
+
+<div id="commentsDiv2">
+    @{
+            Html.RenderPartial("~/Views/Comments/_CommentsTable.cshtml", Model);
+    }
+</div>
+
+<div id="createCommentsForm">
+    @using (Ajax.BeginForm("AJAXCommentCreate", "Comments", new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        UpdateTargetId = "commentsDiv2"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            <h4>Comment</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Comment.Text, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Comment.Text, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Comment.Text, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                    <input type="hidden" value="@Model.Announcement.Id" name="Comment.AnnouncementId" />
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+
+
+@section Scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    @Scripts.Render("~/Bundles/jqueryval")
+}

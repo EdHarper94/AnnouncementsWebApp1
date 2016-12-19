@@ -1,0 +1,32 @@
+﻿@model AnnouncementsWebApp1.Models.AnnouncementView
+
+<div>
+    <h2>Comments</h2>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment.Text)
+            </th>
+            <th></th>
+        </tr>
+        @foreach (AnnouncementsWebApp1.Models.Comment c in Model.Comments)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => c.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => c.Text)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "Comments", new { id = c.Id }, null) |
+                    @Html.ActionLink("Details", "Details", "Comments", new { id = c.Id }, null) |
+                    @Html.ActionLink("Delete", "Delete", "Comments", new { id = c.Id }, null)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
