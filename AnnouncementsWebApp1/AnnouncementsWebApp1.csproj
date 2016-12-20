@@ -239,6 +239,10 @@
     <Compile Include="Migrations\201612201622592_AddUsersToRoles.Designer.cs">
       <DependentUpon>201612201622592_AddUsersToRoles.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612201838306_AddUsersNames.cs" />
+    <Compile Include="Migrations\201612201838306_AddUsersNames.Designer.cs">
+      <DependentUpon>201612201838306_AddUsersNames.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Announcement.cs" />
@@ -366,6 +370,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612201622592_AddUsersToRoles.resx">
       <DependentUpon>201612201622592_AddUsersToRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612201838306_AddUsersNames.resx">
+      <DependentUpon>201612201838306_AddUsersNames.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

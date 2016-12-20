@@ -43,8 +43,18 @@ namespace AnnouncementsWebApp1.Migrations
             um.Create(userLecturer, "password");
             um.Create(userStudent1, "password");
 
+            //Lectuer User
             var userLecturerId = um.FindByName(userLecturer.UserName);
+            userLecturerId.FirstName = "The";
+            userLecturerId.LastName = "Lecturer";
+            um.Update(userLecturerId);
+
+            // Student User
             var userStudent1Id = um.FindByName(userStudent1.UserName);
+            userStudent1Id.FirstName = "John";
+            userStudent1Id.LastName = "Smith";
+            um.Update(userStudent1Id);
+
             um.AddToRole(userLecturerId.Id, "Lecturer");
             um.AddToRole(userStudent1Id.Id, "Student");
         }

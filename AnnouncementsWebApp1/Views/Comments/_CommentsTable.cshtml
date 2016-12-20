@@ -5,6 +5,9 @@
     <table class="table">
         <tr>
             <th>
+                Author
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Comment.Date)
             </th>
             <th>
@@ -15,6 +18,11 @@
         @foreach (AnnouncementsWebApp1.Models.Comment c in Model.Comments)
         {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => c.User.FirstName)
+                    @Html.Display(" ")
+                    @Html.DisplayFor(modelItem => c.User.LastName)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => c.Date)
                 </td>
