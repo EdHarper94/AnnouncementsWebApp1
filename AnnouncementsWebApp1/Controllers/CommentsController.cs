@@ -163,11 +163,19 @@ namespace AnnouncementsWebApp1.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Comment comment = db.Comments.Find(id);
+            int redirectId = comment.AnnouncementId;
             if (comment == null)
             {
                 return HttpNotFound();
             }
-            return View(comment);
+            if ((comment.User.UserName == User.Identity.Name)|| (User.IsInRole("Lecturer")))
+            {
+                return View(comment);
+            }
+            else
+            {
+                return RedirectToAction("Details", "Announcements", new { id = redirectId });
+            }
         }
 
         // POST: Comments/Delete/5
@@ -177,9 +185,17 @@ namespace AnnouncementsWebApp1.Controllers
         {
             Comment comment = db.Comments.Find(id);
             int redirectId = comment.AnnouncementId;
-            db.Comments.Remove(comment);
-            db.SaveChanges();
-            return RedirectToAction("Details", "Announcements", new { id = redirectId });
+            if ((comment.User.UserName == User.Identity.Name) || (User.IsInRole("Lecturer")))
+            {
+                
+                db.Comments.Remove(comment);
+                db.SaveChanges();
+                return RedirectToAction("Details", "Announcements", new { id = redirectId });
+            }
+            else
+            {
+                return RedirectToAction("Details", "Announcements", new { id = redirectId });
+            }
         }
 
         protected override void Dispose(bool disposing)

@@ -30,9 +30,16 @@
                     @Html.DisplayFor(modelItem => c.Text)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", "Comments", new { id = c.Id }, null) |
-                    @Html.ActionLink("Details", "Details", "Comments", new { id = c.Id }, null) |
-                    @Html.ActionLink("Delete", "Delete", "Comments", new { id = c.Id }, null)
+                    @if (HttpContext.Current.User.Identity.Name.Equals(c.User.UserName))
+                    {
+                        @Html.ActionLink("Edit", "Edit", "Comments", new { id = c.Id }, null)
+                        <span> | </span>
+                        @Html.ActionLink("Delete", "Delete", "Comments", new { id = c.Id }, null)
+                    }
+                    else if (User.IsInRole("Lecturer"))
+                    {
+                        @Html.ActionLink("Delete", "Delete", "Comments", new { id = c.Id }, null)
+                    }
                 </td>
             </tr>
         }
