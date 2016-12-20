@@ -52,21 +52,18 @@
         <dd>
             @Html.HiddenFor(model => model.Comment.AnnouncementId)
         </dd>
-        
+
     </dl>
     <p>
-        @if (User.IsInRole("Lecturer"))
-        {
-            @Html.ActionLink("Edit", "Edit", new { id = Model.Announcement.Id });
-        } |
+       
         @Html.ActionLink("Back to List", "Index") |
-        @Html.ActionLink("Comment", "Create", "Comments") 
+        @Html.ActionLink("Comment", "Create", "Comments")
     </p>
 </div>
 
 <div id="commentsDiv2">
     @{
-            Html.RenderPartial("~/Views/Comments/_CommentsTable.cshtml", Model);
+        Html.RenderPartial("~/Views/Comments/_CommentsTable.cshtml", Model);
     }
 </div>
 

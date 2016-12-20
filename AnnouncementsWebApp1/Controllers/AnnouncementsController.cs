@@ -16,9 +16,17 @@ namespace AnnouncementsWebApp1.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Announcements
+        [Authorize(Roles = "Lecturer, Student")]
         public ActionResult Index()
         {
-            return View();
+            if (User.IsInRole("Lecturer"))
+            {
+                return View();
+            }
+            else
+            {
+                return View("IndexStudent");
+            }
         }
 
         // Gets Announcement List
@@ -31,12 +39,21 @@ namespace AnnouncementsWebApp1.Controllers
         /// Builds Announcements Table 
         /// </summary>
         /// <returns> Announcements Table Partial View</returns>
+        [Authorize(Roles = "Lecturer, Student")]
         public ActionResult BuildAnnouncementsTable()
         {
-            return PartialView("_AnnouncementsTable", GetAnnouncements());
+            if (User.IsInRole("Lecturer"))
+            {
+                return PartialView("_AnnouncementsTable", GetAnnouncements());
+            }
+            else
+            {
+                return PartialView("_StudentAnnouncementsTable", GetAnnouncements());
+            }
         }
 
         // GET: Announcements/Details/5
+        [Authorize(Roles = "Lecturer, Student")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -64,6 +81,7 @@ namespace AnnouncementsWebApp1.Controllers
         }
 
         // GET: Announcements/Create
+        [Authorize(Roles = "Lecturer")]
         public ActionResult Create()
         {
             return View();
@@ -74,6 +92,7 @@ namespace AnnouncementsWebApp1.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lecturer")]
         public ActionResult Create([Bind(Include = "Id,CreatedDate,Title,Description,Text,IsDeleted")] Announcement announcement)
         {
             if (ModelState.IsValid)
@@ -99,6 +118,7 @@ namespace AnnouncementsWebApp1.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lecturer")]
         public ActionResult AJAXCreate([Bind(Include = "Id,Description,Title,Text")] Announcement announcement)
         {
             if (ModelState.IsValid)
@@ -119,6 +139,7 @@ namespace AnnouncementsWebApp1.Controllers
 
 
         // GET: Announcements/Edit/5
+        [Authorize(Roles = "Lecturer")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -138,6 +159,7 @@ namespace AnnouncementsWebApp1.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lecturer")]
         public ActionResult Edit([Bind(Include = "Id,CreatedDate,Title,Description,Text,IsDeleted")] Announcement announcement)
         {
             if (ModelState.IsValid)
@@ -150,6 +172,7 @@ namespace AnnouncementsWebApp1.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Lecturer")]
         public ActionResult AJAXEdit(int? id, bool value)
         {
             if (id == null)
@@ -171,6 +194,7 @@ namespace AnnouncementsWebApp1.Controllers
         }
 
         // GET: Announcements/Delete/5
+        [Authorize(Roles = "Lecturer")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -188,6 +212,7 @@ namespace AnnouncementsWebApp1.Controllers
         // POST: Announcements/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Lecturer")]
         public ActionResult DeleteConfirmed(int id)
         {
             Announcement announcement = db.Announcements.Find(id);

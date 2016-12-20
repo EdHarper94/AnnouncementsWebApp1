@@ -223,6 +223,22 @@
     <Compile Include="Migrations\201612161759422_UpdateCommentsTable.Designer.cs">
       <DependentUpon>201612161759422_UpdateCommentsTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612192159161_AddUserNames.cs" />
+    <Compile Include="Migrations\201612192159161_AddUserNames.Designer.cs">
+      <DependentUpon>201612192159161_AddUserNames.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612201503087_AddLecturerRole.cs" />
+    <Compile Include="Migrations\201612201503087_AddLecturerRole.Designer.cs">
+      <DependentUpon>201612201503087_AddLecturerRole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612201508544_AddStudentRole.cs" />
+    <Compile Include="Migrations\201612201508544_AddStudentRole.Designer.cs">
+      <DependentUpon>201612201508544_AddStudentRole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612201622592_AddUsersToRoles.cs" />
+    <Compile Include="Migrations\201612201622592_AddUsersToRoles.Designer.cs">
+      <DependentUpon>201612201622592_AddUsersToRoles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Announcement.cs" />
@@ -308,6 +324,9 @@
     <Content Include="Views\Comments\Edit.cshtml" />
     <Content Include="Views\Comments\Index.cshtml" />
     <Content Include="Views\Comments\_CommentsTable.cshtml" />
+    <Content Include="Views\Announcements\IndexStudent.cshtml" />
+    <Content Include="Views\Announcements\_StudentAnnouncementsTable.cshtml" />
+    <Content Include="Views\Announcements\DetailsStudent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -335,6 +354,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612161759422_UpdateCommentsTable.resx">
       <DependentUpon>201612161759422_UpdateCommentsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612192159161_AddUserNames.resx">
+      <DependentUpon>201612192159161_AddUserNames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612201503087_AddLecturerRole.resx">
+      <DependentUpon>201612201503087_AddLecturerRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612201508544_AddStudentRole.resx">
+      <DependentUpon>201612201508544_AddStudentRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612201622592_AddUsersToRoles.resx">
+      <DependentUpon>201612201622592_AddUsersToRoles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -29,16 +29,41 @@ namespace AnnouncementsWebApp1.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
-
+            AddRoles(context);
             AddUsers(context);
         }
 
         void AddUsers(AnnouncementsWebApp1.Models.ApplicationDbContext context)
         {
-            var user = new ApplicationUser { UserName = "lecturer1@email.com" };
+            var userLecturer = new ApplicationUser { UserName = "lecturer1@email.com" };
+            var userStudent1 = new ApplicationUser { UserName = "user1@email.com" };
+
             var um = new UserManager<ApplicationUser>(
                 new UserStore<ApplicationUser>(context));
-            um.Create(user, "password");
+            um.Create(userLecturer, "password");
+            um.Create(userStudent1, "password");
+
+            var userLecturerId = um.FindByName(userLecturer.UserName);
+            var userStudent1Id = um.FindByName(userStudent1.UserName);
+            um.AddToRole(userLecturerId.Id, "Lecturer");
+            um.AddToRole(userStudent1Id.Id, "Student");
+        }
+
+        void AddRoles(AnnouncementsWebApp1.Models.ApplicationDbContext context)
+        {
+            var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+
+            string roleNameLecturer = "Lecturer";
+            string roleNameStudent = "Student";
+            IdentityResult roleResult;
+            if (!RoleManager.RoleExists(roleNameLecturer))
+            {
+                roleResult = RoleManager.Create(new IdentityRole(roleNameLecturer));
+            }
+            if (!RoleManager.RoleExists(roleNameStudent))
+            {
+                roleResult = RoleManager.Create(new IdentityRole(roleNameStudent));
+            }
         }
     }
 }

@@ -1,0 +1,19 @@
+﻿@model AnnouncementsWebApp1.Models.Announcement
+
+@{
+    ViewBag.Title = "Announcements:";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<div id="announcementsDiv"></div>
+
+@section Scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Custom_Scripts/BuildTable.js"></script>
+    @Scripts.Render("~/Bundles/jqueryval")
+}
