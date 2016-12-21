@@ -15,6 +15,18 @@ namespace AnnouncementsWebApp1.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public bool ValidateOwnership(Comment comment)
+        {
+            if (comment.User.UserName == User.Identity.Name)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         // Index View
         public ActionResult Index()
         {
@@ -130,12 +142,19 @@ namespace AnnouncementsWebApp1.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Comment comment = db.Comments.Find(id);
+            int redirectId = comment.AnnouncementId;
             if (comment == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.AnnouncementId = new SelectList(db.Announcements, "Id", "Title", comment.AnnouncementId);
-            return View(comment);
+            if ((comment.User.UserName == User.Identity.Name) || (User.IsInRole("Lecturer")))
+            {
+                return View(comment);
+            }
+            else
+            {
+                return RedirectToAction("Details", "Announcements", new { id = redirectId });
+            }
         }
 
         // POST: Comments/Edit/5
@@ -145,14 +164,19 @@ namespace AnnouncementsWebApp1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Date,Text,AnnouncementId")] Comment comment)
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(comment).State = EntityState.Modified;
-                db.SaveChanges();
+
+                if (ModelState.IsValid)
+                {
+
+                    db.Entry(comment).State = EntityState.Modified;
+                    db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.AnnouncementId = new SelectList(db.Announcements, "Id", "Title", comment.AnnouncementId);
-            return View(comment);
+                
+            else
+            {
+                return View(comment);
+            }
         }
 
         // GET: Comments/Delete/5
@@ -168,7 +192,7 @@ namespace AnnouncementsWebApp1.Controllers
             {
                 return HttpNotFound();
             }
-            if ((comment.User.UserName == User.Identity.Name)|| (User.IsInRole("Lecturer")))
+            if ((ValidateOwnership(comment))|| (User.IsInRole("Lecturer")))
             {
                 return View(comment);
             }
@@ -185,7 +209,7 @@ namespace AnnouncementsWebApp1.Controllers
         {
             Comment comment = db.Comments.Find(id);
             int redirectId = comment.AnnouncementId;
-            if ((comment.User.UserName == User.Identity.Name) || (User.IsInRole("Lecturer")))
+            if ((ValidateOwnership(comment)) || (User.IsInRole("Lecturer")))
             {
                 
                 db.Comments.Remove(comment);
