@@ -147,7 +147,7 @@ namespace AnnouncementsWebApp1.Controllers
             {
                 return HttpNotFound();
             }
-            if ((comment.User.UserName == User.Identity.Name) || (User.IsInRole("Lecturer")))
+            if ((ValidateOwnership(comment)) || (User.IsInRole("Lecturer")))
             {
                 return View(comment);
             }
@@ -165,17 +165,18 @@ namespace AnnouncementsWebApp1.Controllers
         public ActionResult Edit([Bind(Include = "Id,Date,Text,AnnouncementId")] Comment comment)
         {
 
-                if (ModelState.IsValid)
+            int redirectId = comment.AnnouncementId;
+            if (ModelState.IsValid)
                 {
 
                     db.Entry(comment).State = EntityState.Modified;
                     db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Announcements", new { id = redirectId });
             }
                 
             else
             {
-                return View(comment);
+                return RedirectToAction("Details", "Announcements", new { id = redirectId });
             }
         }
 
