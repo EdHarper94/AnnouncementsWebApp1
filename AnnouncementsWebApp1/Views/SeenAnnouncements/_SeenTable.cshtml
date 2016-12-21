@@ -1,0 +1,32 @@
+﻿@model AnnouncementsWebApp1.Models.SeenAnnouncementView
+
+<div>
+    <h2>Users that have seen the annoucement</h2>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SeenAnnouncement.User.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SeenAnnouncement.User.FullName)
+            </th>
+            <th>
+                
+            </th>
+        </tr>
+        @foreach (AnnouncementsWebApp1.Models.SeenAnnouncement sa in Model.SeenAnnouncements)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => sa.User.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => sa.User.FullName)
+                    <span> </span>
+                   
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

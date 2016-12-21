@@ -55,12 +55,13 @@
         
     </dl>
     <p>
+        @Html.ActionLink("Back to Announcements", "Index") |
         @if (User.IsInRole("Lecturer"))
         {
             @Html.ActionLink("Edit", "Edit", new { id = Model.Announcement.Id });
-        } |
-        @Html.ActionLink("Back to List", "Index") |
-        @Html.ActionLink("Comment", "Create", "Comments") 
+            <span> | </span>
+            @Html.ActionLink("View Seen", "Details", "SeenAnnouncements", new { id = Model.Announcement.Id }, null)
+        } 
     </p>
 </div>
 
@@ -99,12 +100,13 @@
             </div>
         </div>
     }
-
+    <input type="hidden" value="@Model.Announcement.Id" id="AnnouncementId" />
 </div>
 
 
 
 @section Scripts{
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Custom_Scripts/MarkSeen.js"></script>
     @Scripts.Render("~/Bundles/jqueryval")
 }

@@ -37,11 +37,13 @@ namespace AnnouncementsWebApp1.Migrations
         {
             var userLecturer = new ApplicationUser { UserName = "lecturer1@email.com" };
             var userStudent1 = new ApplicationUser { UserName = "user1@email.com" };
+            var userStudent2 = new ApplicationUser { UserName = "student2@email.com" };
 
             var um = new UserManager<ApplicationUser>(
                 new UserStore<ApplicationUser>(context));
             um.Create(userLecturer, "password");
             um.Create(userStudent1, "password");
+            um.Create(userStudent2, "password");
 
             //Lectuer User
             var userLecturerId = um.FindByName(userLecturer.UserName);
@@ -55,8 +57,15 @@ namespace AnnouncementsWebApp1.Migrations
             userStudent1Id.LastName = "Smith";
             um.Update(userStudent1Id);
 
+            // Student User
+            var userStudent2Id = um.FindByName(userStudent2.UserName);
+            userStudent2Id.FirstName = "Kate";
+            userStudent2Id.LastName = "Dawson";
+            um.Update(userStudent2Id);
+
             um.AddToRole(userLecturerId.Id, "Lecturer");
             um.AddToRole(userStudent1Id.Id, "Student");
+            um.AddToRole(userStudent2Id.Id, "Student");
         }
 
         void AddRoles(AnnouncementsWebApp1.Models.ApplicationDbContext context)

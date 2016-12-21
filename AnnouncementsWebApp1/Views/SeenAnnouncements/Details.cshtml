@@ -1,0 +1,45 @@
+﻿@model AnnouncementsWebApp1.Models.SeenAnnouncementView
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>SeenAnnouncement</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Announcement.Title)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Announcement.Title)
+            </dd>
+    
+        </dl>
+    </div>
+    <div id="seenBar">
+        <p>@Html.DisplayFor(model => model.PercentageSeen)%</p>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar"
+                 style="width:@(Html.AttributeEncode(Html.DisplayFor(model => model.PercentageSeen)))%"></div>
+        </div>
+    </div>
+    <p>
+        @Html.ActionLink("Back to List", "Details", "Announcements", new { id = Model.Announcement.Id }, null)
+    </p>
+    <div>
+        @{
+            Html.RenderPartial("~/Views/SeenAnnouncements/_SeenTable.cshtml", Model);
+        }
+    </div>
+</body>
+</html>

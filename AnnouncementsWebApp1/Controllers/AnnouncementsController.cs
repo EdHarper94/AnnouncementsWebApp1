@@ -64,9 +64,9 @@ namespace AnnouncementsWebApp1.Controllers
             List<Comment> comments = db.Comments.ToList();
             AnnouncementView av = new AnnouncementView();
             av.Comments = new List<Comment>();
-
             av.Announcement = announcement;
-            foreach (Comment c in comments){
+            foreach (Comment c in comments)
+            {
                 if (c.AnnouncementId == id)
                 {
                     av.Comments.Add(c);

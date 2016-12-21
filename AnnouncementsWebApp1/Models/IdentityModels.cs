@@ -19,6 +19,10 @@ namespace AnnouncementsWebApp1.Models
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string FullName
+        {
+            get { return FirstName + " " + LastName; }
+        }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -30,10 +34,12 @@ namespace AnnouncementsWebApp1.Models
 
         public DbSet<Announcement> Announcements { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<SeenAnnouncement> SeenAnnouncements { get; set; }
 
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
         }
+
     }
 }
