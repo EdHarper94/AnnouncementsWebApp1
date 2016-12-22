@@ -27,7 +27,7 @@
         </dl>
     </div>
     <div id="seenBar">
-        <p>@Html.DisplayFor(model => model.PercentageSeen)%</p>
+        <p><p>@Html.DisplayFor(model => model.TotalSeen) / @Html.DisplayFor(model => model.TotalUsers) Users have seen this annoucnement.  : @Html.DisplayFor(model => model.PercentageSeen)%</p>
         <div class="progress">
             <div class="progress-bar" role="progressbar"
                  style="width:@(Html.AttributeEncode(Html.DisplayFor(model => model.PercentageSeen)))%"></div>

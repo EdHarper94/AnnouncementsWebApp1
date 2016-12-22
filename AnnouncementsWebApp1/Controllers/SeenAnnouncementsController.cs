@@ -43,10 +43,10 @@ namespace AnnouncementsWebApp1.Controllers
             }
 
             IdentityRole myRole = db.Roles.First(r => r.Name == "Student");
-            int userTotal = db.Set<IdentityUserRole>().Count(r => r.RoleId == myRole.Id);
+            sv.TotalUsers = db.Set<IdentityUserRole>().Count(r => r.RoleId == myRole.Id);
 
 
-            sv.PercentageSeen = Math.Round(100f * ((float)sv.TotalSeen / (float)userTotal));
+            sv.PercentageSeen = Math.Round(100f * ((float)sv.TotalSeen / (float)sv.TotalUsers));
             return sv;
         }
 

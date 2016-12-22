@@ -17,6 +17,8 @@ namespace AnnouncementsWebApp1.Models
         [NotMapped]
         public int TotalSeen { get; set; }
         [NotMapped]
+        public int TotalUsers { get; set; }
+        [NotMapped]
         public double PercentageSeen { get; set; }
     }
 }
