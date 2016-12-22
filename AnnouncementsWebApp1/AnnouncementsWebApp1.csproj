@@ -252,6 +252,10 @@
     <Compile Include="Migrations\201612212238082_AddNewUser.Designer.cs">
       <DependentUpon>201612212238082_AddNewUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612221614029_AddExampleUsers.cs" />
+    <Compile Include="Migrations\201612221614029_AddExampleUsers.Designer.cs">
+      <DependentUpon>201612221614029_AddExampleUsers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Announcement.cs" />
@@ -400,6 +404,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612212238082_AddNewUser.resx">
       <DependentUpon>201612212238082_AddNewUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612221614029_AddExampleUsers.resx">
+      <DependentUpon>201612221614029_AddExampleUsers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
