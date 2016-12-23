@@ -18,7 +18,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44338</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -256,6 +256,14 @@
     <Compile Include="Migrations\201612221614029_AddExampleUsers.Designer.cs">
       <DependentUpon>201612221614029_AddExampleUsers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612230020575_AddRequiredFields.cs" />
+    <Compile Include="Migrations\201612230020575_AddRequiredFields.Designer.cs">
+      <DependentUpon>201612230020575_AddRequiredFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612230107579_AddIsPublic.cs" />
+    <Compile Include="Migrations\201612230107579_AddIsPublic.Designer.cs">
+      <DependentUpon>201612230107579_AddIsPublic.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Announcement.cs" />
@@ -271,6 +279,9 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\cerulean.bootstrap.min.css" />
+    <Content Include="Content\cerulean_bootstrap.css" />
+    <Content Include="Content\CustomStyles.css" />
     <Content Include="Custom_Scripts\AddCheckBoxListener.js" />
     <Content Include="Custom_Scripts\BuildTable.js" />
     <Content Include="Custom_Scripts\MarkSeen.js" />
@@ -357,6 +368,7 @@
     <Content Include="Views\SeenAnnouncements\Edit.cshtml" />
     <Content Include="Views\SeenAnnouncements\Index.cshtml" />
     <Content Include="Views\SeenAnnouncements\_SeenTable.cshtml" />
+    <Content Include="Views\Shared\NotAuthorised.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -408,6 +420,12 @@
     <EmbeddedResource Include="Migrations\201612221614029_AddExampleUsers.resx">
       <DependentUpon>201612221614029_AddExampleUsers.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612230020575_AddRequiredFields.resx">
+      <DependentUpon>201612230020575_AddRequiredFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612230107579_AddIsPublic.resx">
+      <DependentUpon>201612230107579_AddIsPublic.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -427,7 +445,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>56106</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:56106/</IISUrl>
+          <IISUrl>https://localhost:44338/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

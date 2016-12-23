@@ -43,11 +43,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Announcement.IsDeleted)
+            @Html.DisplayNameFor(model => model.Announcement.IsPublic)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Announcement.IsDeleted)
+            @Html.CheckBoxFor(model => model.Announcement.IsPublic, new {onclick = "return false"})
         </dd>
         <dd>
             @Html.HiddenFor(model => model.Comment.AnnouncementId)

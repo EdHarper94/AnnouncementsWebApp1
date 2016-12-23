@@ -13,9 +13,17 @@ namespace AnnouncementsWebApp1.Controllers
 {
     public class AnnouncementsController : Controller
     {
+        /**
+         * AnnouncementController.cs
+         * Handles announcement model operations
+         * @see Views/Announcements for associated views
+         **/
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Announcements
+        /// <summary>
+        /// Returns view based on user role
+        /// </summary>
+        /// <returns>index view</returns>
         [Authorize(Roles = "Lecturer, Student")]
         public ActionResult Index()
         {
@@ -29,16 +37,27 @@ namespace AnnouncementsWebApp1.Controllers
             }
         }
 
-        // Gets Announcement List
+        
+        /// <summary>
+        /// Gets list of announcements depending on role.
+        /// </summary>
+        /// <returns>list of announcements</returns>
         private IEnumerable<Announcement> GetAnnouncements()
         {
-            return db.Announcements.ToList();
+            if (User.IsInRole("Student"))
+            {
+                return db.Announcements.ToList().Where(x => x.IsPublic == true);
+            }
+            else
+            {
+                return db.Announcements.ToList();
+            }
         }
 
         /// <summary>
-        /// Builds Announcements Table 
+        /// Builds Announcements Table. Returning different partial view depending on role.
         /// </summary>
-        /// <returns> Announcements Table Partial View</returns>
+        /// <returns> Announcements Table Partial View (student/lecturer)</returns>
         [Authorize(Roles = "Lecturer, Student")]
         public ActionResult BuildAnnouncementsTable()
         {
@@ -52,7 +71,11 @@ namespace AnnouncementsWebApp1.Controllers
             }
         }
 
-        // GET: Announcements/Details/5
+        /// <summary>
+        /// Returns AnnouncementView containing announcements and comments
+        /// </summary>
+        /// <param name="id">id of announcements</param>
+        /// <returns>AnnouncementView</returns>
         [Authorize(Roles = "Lecturer, Student")]
         public ActionResult Details(int? id)
         {
@@ -60,66 +83,38 @@ namespace AnnouncementsWebApp1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Announcement announcement = db.Announcements.Find(id);
-            List<Comment> comments = db.Comments.ToList();
-            AnnouncementView av = new AnnouncementView();
-            av.Comments = new List<Comment>();
-            av.Announcement = announcement;
-            foreach (Comment c in comments)
-            {
-                if (c.AnnouncementId == id)
-                {
-                    av.Comments.Add(c);
-                }
-            }
 
+            Announcement announcement = db.Announcements.Find(id);
             if (announcement == null)
             {
                 return HttpNotFound();
             }
-            return View(av);
-        }
-
-        // GET: Announcements/Create
-        [Authorize(Roles = "Lecturer")]
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Announcements/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Lecturer")]
-        public ActionResult Create([Bind(Include = "Id,CreatedDate,Title,Description,Text,IsDeleted")] Announcement announcement)
-        {
-            if (ModelState.IsValid)
+            // Check if student then announcement is public
+            if (User.IsInRole("Student") && announcement.IsPublic != true)
             {
-                string currentUserId = User.Identity.GetUserId();
-                ApplicationUser currentUser = db.Users.FirstOrDefault(
-                    x => x.Id == currentUserId
-                    );
-                announcement.User = currentUser;
-                announcement.CreatedDate = DateTime.Now;
-                db.Announcements.Add(announcement);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return View("NotAuthorised");
             }
+            else
+            {
+                CommentsController cc = new CommentsController();
+                AnnouncementView av = new AnnouncementView();
+                av.Announcement = announcement;
+                cc.GetComments(id);
 
-            return PartialView(announcement);
+                av = cc.GetComments(id);
+                return View(av);
+            }
         }
 
         /// <summary>
         /// Ajax Create Announcement
         /// </summary>
-        /// <param name="announcement"></param>
-        /// <returns></returns>
+        /// <param name="announcement">Announcement form</param>
+        /// <returns>Announcement table partial view</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Lecturer")]
-        public ActionResult AJAXCreate([Bind(Include = "Id,Description,Title,Text")] Announcement announcement)
+        public ActionResult AJAXCreate([Bind(Include = "Description,Title,Text, IsPublic")] Announcement announcement)
         {
             if (ModelState.IsValid)
             {
@@ -129,7 +124,6 @@ namespace AnnouncementsWebApp1.Controllers
                     );
                 announcement.User = currentUser;
                 announcement.CreatedDate = DateTime.Now;
-                announcement.IsDeleted = false;
                 db.Announcements.Add(announcement);
                 db.SaveChanges();
             }
@@ -138,7 +132,11 @@ namespace AnnouncementsWebApp1.Controllers
         }
 
 
-        // GET: Announcements/Edit/5
+        /// <summary>
+        /// Edit Announcement
+        /// </summary>
+        /// <param name="id">Announcement of announcement to edit</param>
+        /// <returns></returns>
         [Authorize(Roles = "Lecturer")]
         public ActionResult Edit(int? id)
         {
@@ -154,13 +152,15 @@ namespace AnnouncementsWebApp1.Controllers
             return View(announcement);
         }
 
-        // POST: Announcements/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Edit announcement Method
+        /// </summary>
+        /// <param name="announcement">id of Announcement  to Edit</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Lecturer")]
-        public ActionResult Edit([Bind(Include = "Id,CreatedDate,Title,Description,Text,IsDeleted")] Announcement announcement)
+        public ActionResult Edit([Bind(Include = "Id,CreatedDate,Title,Description,Text,IsPublic")] Announcement announcement)
         {
             if (ModelState.IsValid)
             {
@@ -171,6 +171,12 @@ namespace AnnouncementsWebApp1.Controllers
             return View(announcement);
         }
 
+        /// <summary>
+        /// Ajax Edit for Checkboxes
+        /// </summary>
+        /// <param name="id">Checkbox id</param>
+        /// <param name="value">Value of checkbox</param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Lecturer")]
         public ActionResult AJAXEdit(int? id, bool value)
@@ -186,14 +192,19 @@ namespace AnnouncementsWebApp1.Controllers
             }
             else
             {
-                announcement.IsDeleted = value;
+                announcement.IsPublic = value;
                 db.Entry(announcement).State = EntityState.Modified;
                 db.SaveChanges();
                 return PartialView("_AnnouncementsTable", GetAnnouncements());
             }
         }
 
-        // GET: Announcements/Delete/5
+        /// <summary>
+        /// POST
+        /// Get Announcement for delete
+        /// </summary>
+        /// <param name="id">id of announcement to delete</param>
+        /// <returns></returns>
         [Authorize(Roles = "Lecturer")]
         public ActionResult Delete(int? id)
         {
@@ -209,7 +220,12 @@ namespace AnnouncementsWebApp1.Controllers
             return View(announcement);
         }
 
-        // POST: Announcements/Delete/5
+        /// <summary>
+        /// POST 
+        /// Delete announcement from db
+        /// </summary>
+        /// <param name="id">Announcement to delete</param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Lecturer")]

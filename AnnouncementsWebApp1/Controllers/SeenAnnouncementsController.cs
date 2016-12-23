@@ -16,12 +16,6 @@ namespace AnnouncementsWebApp1.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: SeenAnnouncements
-        public ActionResult Index()
-        {
-            var seenAnnouncements = db.SeenAnnouncements.Include(s => s.Announcement);
-            return View(seenAnnouncements.ToList());
-        }
 
         //GET SeenAnnouncements
         public SeenAnnouncementView GetSeenAnnouncements(int? id)
@@ -41,10 +35,9 @@ namespace AnnouncementsWebApp1.Controllers
                     sv.SeenAnnouncements.Add(sa);
                 }
             }
-
             IdentityRole myRole = db.Roles.First(r => r.Name == "Student");
             sv.TotalUsers = db.Set<IdentityUserRole>().Count(r => r.RoleId == myRole.Id);
-
+            List<ApplicationUser> us = db.Users.ToList();
 
             sv.PercentageSeen = Math.Round(100f * ((float)sv.TotalSeen / (float)sv.TotalUsers));
             return sv;
@@ -60,7 +53,6 @@ namespace AnnouncementsWebApp1.Controllers
             }
             Announcement announcement = db.Announcements.Find(id);
             SeenAnnouncementView sv = GetSeenAnnouncements(id);
-            
             if (announcement == null)
             {
                 return HttpNotFound();
@@ -68,35 +60,10 @@ namespace AnnouncementsWebApp1.Controllers
             return View(sv);
         }
 
-        // GET: SeenAnnouncements/Create
-        public ActionResult Create()
-        {
-            ViewBag.AnnouncementId = new SelectList(db.Announcements, "Id", "Title");
-            return View();
-        }
-
-        // POST: SeenAnnouncements/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,AnnouncementId")] SeenAnnouncement seenAnnouncement)
-        {
-            if (ModelState.IsValid)
-            {
-                db.SeenAnnouncements.Add(seenAnnouncement);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.AnnouncementId = new SelectList(db.Announcements, "Id", "Title", seenAnnouncement.AnnouncementId);
-            return View(seenAnnouncement);
-        }
-
         /// <summary>
         /// Adds user and announcementID to SeenAnnouncements table
         /// </summary>
-        /// <param name="seenAnnouncement"></param>
+        /// <param name="seenAnnouncement">Seen Announcement for user</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Student")]
@@ -122,64 +89,6 @@ namespace AnnouncementsWebApp1.Controllers
            
         }
 
-        // GET: SeenAnnouncements/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            SeenAnnouncement seenAnnouncement = db.SeenAnnouncements.Find(id);
-            if (seenAnnouncement == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.AnnouncementId = new SelectList(db.Announcements, "Id", "Title", seenAnnouncement.AnnouncementId);
-            return View(seenAnnouncement);
-        }
-
-        // POST: SeenAnnouncements/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AnnouncementId")] SeenAnnouncement seenAnnouncement)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(seenAnnouncement).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.AnnouncementId = new SelectList(db.Announcements, "Id", "Title", seenAnnouncement.AnnouncementId);
-            return View(seenAnnouncement);
-        }
-
-        // GET: SeenAnnouncements/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            SeenAnnouncement seenAnnouncement = db.SeenAnnouncements.Find(id);
-            if (seenAnnouncement == null)
-            {
-                return HttpNotFound();
-            }
-            return View(seenAnnouncement);
-        }
-
-        // POST: SeenAnnouncements/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            SeenAnnouncement seenAnnouncement = db.SeenAnnouncements.Find(id);
-            db.SeenAnnouncements.Remove(seenAnnouncement);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
 
         protected override void Dispose(bool disposing)
         {

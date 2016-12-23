@@ -54,9 +54,9 @@ namespace AnnouncementsWebApp1
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "1904133449814558",
+               appSecret: "78d0b58bf4b471dac563dbfb69940061");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{

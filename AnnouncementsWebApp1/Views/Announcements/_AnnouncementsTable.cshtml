@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<AnnouncementsWebApp1.Models.Announcement>
 
-<table class="table">
+<table class="table table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Title)
@@ -12,7 +12,7 @@
             @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.IsDeleted)
+            @Html.DisplayNameFor(model => model.IsPublic)
         </th>
         <th></th>
     </tr>
@@ -30,7 +30,7 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.CheckBoxFor(modelItem => item.IsDeleted, new { id = item.Id, @class= "ActiveCheck" })
+                @Html.CheckBoxFor(modelItem => item.IsPublic, new { id = item.Id, @class= "ActiveCheck" })
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |

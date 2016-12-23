@@ -7,14 +7,13 @@ namespace AnnouncementsWebApp1.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Add
-        : IMigrationMetadata
+    public sealed partial class AddRequiredFields : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddIsDeleted));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddRequiredFields));
         
         string IMigrationMetadata.Id
         {
-            get { return "201612151705504_AddIsDeleted"; }
+            get { return "201612230020575_AddRequiredFields"; }
         }
         
         string IMigrationMetadata.Source
