@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿// Build Table Ajax
+$(document).ready(function () {
 
     $.ajax({
         url: '/Announcements/BuildAnnouncementsTable',

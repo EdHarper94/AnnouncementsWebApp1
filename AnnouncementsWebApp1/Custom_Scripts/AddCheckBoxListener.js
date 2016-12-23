@@ -1,4 +1,5 @@
-﻿$(document).ready(function() {
+﻿// Add checkbox AJAX
+$(document).ready(function () {
 
     $('.ActiveCheck').change(function () {
         var self = $(this);
